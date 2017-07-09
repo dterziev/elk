@@ -38,7 +38,6 @@ namespace LogGenerator
                 () => LogStuff(cts.Token),
                 cts.Token);
 
-
             Console.WriteLine("Press Ctrl+C to exit...");
 
             try

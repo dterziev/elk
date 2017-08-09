@@ -25,3 +25,12 @@ https://www.elastic.co/downloads/beats/filebeat
 
 
 For version 5.5.1 see `setup-win.sh`.
+
+TODO:
+
+* Describe testing with telnet.exe and the tcp input
+* Describe testing with using tags in the filebeat prospectors folder
+* Json input
+* Try serilog
+* ...
+

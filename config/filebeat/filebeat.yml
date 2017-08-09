@@ -1,0 +1,15 @@
+name: "filebeat-shipper"
+tags: ["logs"]
+fields_under_root: true
+path.config: ./config/filebeat/
+#filebeat.config_dir: config/
+filebeat.config.prospectors:
+  path: 'config/*.yml' #../../config/filebeat/config/*.yml 
+  reload.enabled: true
+  reload.period: 10s
+output.logstash:
+  hosts: ["localhost:5000"]
+  enabled: true
+output.console:
+  enabled: false
+  pretty: true

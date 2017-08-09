@@ -22,4 +22,15 @@ echo 'start "Logstash" cmd /k bin\logstash-5.5.1\bin\logstash.bat -f config/logs
 echo '@echo off' > start-filebeat.cmd
 echo 'start "Filebeat" cmd /k bin\filebeat-5.5.1-windows-x86_64\filebeat.exe -e -c config\filebeat\filebeat.yml'>> start-filebeat.cmd
 
+echo '@echo off' > start-log-generator.cmd
+echo 'pushd'>> start-log-generator.cmd
+echo 'cd log-generator\src\LogGenerator'>> start-log-generator.cmd
+echo 'dotnet restore'>> start-log-generator.cmd
+echo 'dotnet build'>> start-log-generator.cmd
+echo 'dotnet run'>> start-log-generator.cmd
+echo 'popd'>> start-log-generator.cmd
+
+
+
+
 

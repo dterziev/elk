@@ -17,7 +17,7 @@ namespace LogGenerator
             Console.WriteLine(AppContext.BaseDirectory);
 #if NETCOREAPP1_1
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            XmlConfigurator.Configure(logRepository, new FileInfo(Path.Combine(AppContext.BaseDirectory, "log4net.config")));
 #else
             AppDomain.UnhandledException += (s, e) => 
             {

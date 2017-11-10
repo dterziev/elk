@@ -1,4 +1,5 @@
-﻿namespace log4net.Layout {
+﻿namespace log4net.Layout 
+{
     public class JsonLayout : log4net.Layout.LayoutSkeleton
     {
         public override void ActivateOptions()

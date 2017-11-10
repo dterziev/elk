@@ -15,16 +15,15 @@ namespace LogGenerator
         static int Main(string[] args)
         {
             Console.WriteLine(AppContext.BaseDirectory);
-#if NETCOREAPP1_1
+
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo(Path.Combine(AppContext.BaseDirectory, "log4net.config")));
-#else
-            AppDomain.UnhandledException += (s, e) => 
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => 
             {
-                Log.Fatal("Unhandled error occured. Terminating the process. Data loss might occur.", e.ExceptionObject);
+                Log.FatalFormat("Unhandled error occured. Terminating the process. Data loss might occur. Exception: {0}", e.ExceptionObject);
                 Environment.ExitCode = -1;
-            });
-#endif
+            };
+
             var cts = new CancellationTokenSource();
             var exitRequestedTask = Task.Delay(int.MaxValue, cts.Token);
 
@@ -39,7 +38,7 @@ namespace LogGenerator
                 cts.Token);
 
             Console.WriteLine("Press Ctrl+C to exit...");
-
+            throw new Exception("this is unhandled");
             try
             {
                 Task.WaitAny(exitRequestedTask, workerTask);

@@ -38,7 +38,7 @@ namespace LogGenerator
                 cts.Token);
 
             Console.WriteLine("Press Ctrl+C to exit...");
-            throw new Exception("this is unhandled");
+            
             try
             {
                 Task.WaitAny(exitRequestedTask, workerTask);

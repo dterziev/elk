@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace LogGenerator
 {
@@ -15,10 +16,10 @@ namespace LogGenerator
         static int Main(string[] args)
         {
             Console.WriteLine(AppContext.BaseDirectory);
-
+            
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo(Path.Combine(AppContext.BaseDirectory, "log4net.config")));
-            AppDomain.CurrentDomain.UnhandledException += (s, e) => 
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
                 Log.FatalFormat("Unhandled error occured. Terminating the process. Data loss might occur. Exception: {0}", e.ExceptionObject);
                 Environment.ExitCode = -1;
@@ -34,11 +35,11 @@ namespace LogGenerator
             };
 
             var workerTask = Task.Run(
-                () => LogStuff(cts.Token),
+                () => LogStuff(cts.Token), 
                 cts.Token);
 
             Console.WriteLine("Press Ctrl+C to exit...");
-            
+
             try
             {
                 Task.WaitAny(exitRequestedTask, workerTask);
@@ -71,19 +72,25 @@ namespace LogGenerator
             var rnd = new Random();
             while (!cancellationToken.IsCancellationRequested)
             {
-                if(rnd.Next(100) > 90)
+                var correlationId = Guid.NewGuid();
+
+                Trace.CorrelationManager.StartLogicalOperation(correlationId);
                 {
-                    LogException();
-                }
-                else
-                {
-                    LogEvent(
-                        Guid.NewGuid(), 
-                        success: (rnd.Next(10)) > 1,
-                        durationInMilliseconds: 50 + rnd.Next(200));
+                    if (rnd.Next(100) > 90)
+                    {
+                        LogException(correlationId);
+                    }
+                    else
+                    {
+                        LogEvent(
+                            correlationId,
+                            success: (rnd.Next(10)) > 1,
+                            durationInMilliseconds: 50 + rnd.Next(200));
+                    }
                 }
 
-                Task.Delay(500, cancellationToken).Wait();
+                Trace.CorrelationManager.StopLogicalOperation();
+                Task.Delay(500, cancellationToken).GetAwaiter().GetResult();
             }
         }
 
@@ -99,7 +106,7 @@ namespace LogGenerator
             }
         }
 
-        private static void LogException()
+        private static void LogException(Guid correlatioId)
         {
             try
             {
@@ -107,7 +114,7 @@ namespace LogGenerator
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Log.Error($"Log exception. {{ correlationId: {correlatioId:N} }}", ex);
             }
         }
     }

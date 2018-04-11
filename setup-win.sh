@@ -15,6 +15,8 @@ unzip filebeat-6.1.2-windows-x86_64.zip -d bin/
 echo '@echo off'> start-db-and-ui.cmd
 echo 'start "ElasticSearch" cmd /k bin\elasticsearch-6.1.2\bin\elasticsearch.bat'>> start-db-and-ui.cmd
 echo 'start "Kibana" cmd /k bin\kibana-6.1.2-windows-x86_64\bin\kibana.bat'>> start-db-and-ui.cmd
+echo 'start "Kibana" cmd /k bin\kibana-6.1.2-windows-x86_64\bin\kibana.bat'>> start-db-and-ui.cmd
+echo 'start http://localhost:5601/app/kibana'>> start-db-and-ui.cmd
 
 echo '@echo off' > start-logstash.cmd
 echo 'start "Logstash" cmd /k bin\logstash-6.1.2\bin\logstash.bat -f config/logstash/*.conf --config.reload.automatic'>> start-logstash.cmd

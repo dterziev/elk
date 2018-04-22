@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LogGenerator.Http": {
+      "commandName": "Project",
+      "commandLineArgs": "\"http://localhost:5003\" 1 200 1 3"
+    }
+  }
+}

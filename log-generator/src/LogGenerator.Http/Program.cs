@@ -57,7 +57,7 @@ namespace LogGenerator.EventHub
                     var content = new ByteArrayContent(payload.Array, payload.Offset, payload.Count);
                     content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
-                    var result = await client.PostAsync("/", content);
+                    var result = await client.PostAsync("", content);
                     result.EnsureSuccessStatusCode();
                     Console.WriteLine($"{DateTime.Now} Sent {startSequenceNo}");
                 }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LogGenerator.EventHub": {
+      "commandName": "Project",
+      "commandLineArgs": "1 200 2 4"
+    }
+  }
+}
